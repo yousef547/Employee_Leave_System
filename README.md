@@ -23,8 +23,8 @@ dotnet ef database update
 dotnet run
 ```
 
-> ✅ السيرفر هيشتغل على: http://localhost:5000
-> ✅ Swagger UI: http://localhost:5000/swagger
+> ✅ السيرفر هيشتغل على: https://localhost:59020
+> ✅ Swagger UI: https://localhost:59020/swagger/index.html
 
 ---
 
@@ -71,7 +71,7 @@ ng serve
 ---
 
 ## ⚠️ قواعد الإجازات
-1. مدة الإجازة لا تقل عن **30 يوم**
+1. مدة الإجازة لا تزيد عن **30 يوم**
 2. لا يمكن تسجيل **إجازتين في نفس الفترة** لنفس الموظف
 3. إجمالي الإجازة لا يتجاوز **30 يوم سنوياً** لكل نوع
 
