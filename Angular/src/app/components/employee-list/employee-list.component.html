@@ -1,0 +1,58 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>قائمة الموظفين</h2>
+    <button class="btn btn-primary" (click)="addEmployee()">
+      <i class="bi bi-plus-circle"></i> إضافة موظف
+    </button>
+  </div>
+
+  <div *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border"></div>
+  </div>
+
+  <table class="table table-bordered table-hover text-center" *ngIf="!loading">
+    <thead class="table-dark">
+      <tr>
+        <th>رقم الموظف</th>
+        <th>الاسم</th>
+        <th>تاريخ الميلاد</th>
+        <th>المؤهل</th>
+        <td>عدد ايام الاجازات</td>
+        <th>الإجراءات</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let emp of employees">
+        <td>{{ emp.employeeNumber }}</td>
+        <td>{{ emp.name }}</td>
+        <td>{{ emp.dateOfBirth ? (emp.dateOfBirth | date:'dd/MM/yyyy') : '-' }}</td>
+        <td>{{ emp.qualification || '-' }}</td>
+        <td>{{ emp.numberOfDays }}</td>
+        <td>
+          <button class="btn btn-sm btn-info me-1" (click)="viewLeaves(emp.id)">الإجازات</button>
+          <button class="btn btn-sm btn-warning me-1" (click)="editEmployee(emp.id)">تعديل</button>
+          <button class="btn btn-sm btn-danger" (click)="deleteEmployee(emp.id)">حذف</button>
+        </td>
+      </tr>
+      <tr *ngIf="employees.length === 0">
+        <td colspan="5">لا توجد بيانات</td>
+      </tr>
+
+      <div *ngIf="employees.length > 0">
+
+        <button (click)="prevPage()" [disabled]="pageNumber === 1">
+          Previous
+        </button>
+
+        <span>
+          Page {{ pageNumber }} of {{ totalPages }}
+        </span>
+
+        <button (click)="nextPage()" [disabled]="pageNumber * pageSize >= totalCount">
+          Next
+        </button>
+      </div>
+    </tbody>
+  </table>
+</div>

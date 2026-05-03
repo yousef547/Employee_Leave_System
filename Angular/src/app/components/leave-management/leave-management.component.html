@@ -1,0 +1,105 @@
+<div class="container mt-4" id="printable">
+  <!-- Employee Info -->
+  <div class="card mb-4 shadow-sm" *ngIf="employee">
+    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">بيانات الموظف</h5>
+      <div>
+        <button class="btn btn-sm btn-light me-2" (click)="print()">🖨️ طباعة</button>
+        <button class="btn btn-sm btn-secondary" (click)="back()">رجوع</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3"><strong>رقم الموظف:</strong> {{ employee.employeeNumber }}</div>
+        <div class="col-md-3"><strong>الاسم:</strong> {{ employee.name }}</div>
+        <div class="col-md-3"><strong>تاريخ الميلاد:</strong> {{ employee.dateOfBirth ? (employee.dateOfBirth | date:'dd/MM/yyyy') : '-' }}</div>
+        <div class="col-md-3"><strong>المؤهل:</strong> {{ employee.qualification || '-' }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alerts -->
+  <div *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
+  <div *ngIf="successMsg" class="alert alert-success">{{ successMsg }}</div>
+
+  <!-- Leave Form -->
+  <div class="card mb-4 shadow-sm no-print">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">{{ editingLeaveId ? 'تعديل الإجازة' : 'إضافة إجازة جديدة' }}</h5>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="form" (ngSubmit)="saveLeave()">
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label class="form-label">نوع الإجازة *</label>
+            <select class="form-select" formControlName="leaveType">
+              <option [value]="null">-- اختر النوع --</option>
+              <option *ngFor="let t of leaveTypes" [value]="t.id">{{ (t.name) }}</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">تاريخ البداية *</label>
+            <input type="date" class="form-control" formControlName="startDate" />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">المدة (أيام) * (لا تقل عن 1 يوم ولا تذيد عن 30 يوم)</label>
+            <input type="number" class="form-control" formControlName="durationDays" min="1" max="30" />
+            <div class="text-danger small" *ngIf="form.get('durationDays')?.errors?.['min'] || form.get('durationDays')?.errors?.['max']">
+            المدة يجب ألا تقل عن 1 يوم ولا تذيد عن 30 يوم
+            </div>
+          </div>
+        </div>
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-success" [disabled]="form.invalid || loading">
+            {{ loading ? 'جاري الحفظ...' : 'حفظ' }}
+          </button>
+          <button type="button" class="btn btn-secondary" *ngIf="editingLeaveId" (click)="cancelEdit()">
+            إلغاء
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Leaves Table -->
+  <div class="card shadow-sm">
+    <div class="card-header bg-secondary text-white">
+      <h5 class="mb-0">سجل الإجازات</h5>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-bordered table-hover text-center mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th>نوع الإجازة</th>
+            <th>تاريخ البداية</th>
+            <th>المدة (يوم)</th>
+            <th>تاريخ الانتهاء</th>
+            <th class="no-print">الإجراءات</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let leave of leaves">
+            <td>{{ getleaveTypes(leave.leaveType) }}</td>
+            <td>{{ leave.startDate | date:'dd/MM/yyyy' }}</td>
+            <td>{{ leave.durationDays }}</td>
+            <td>{{ leave.endDate | date:'dd/MM/yyyy' }}</td>
+            <td class="no-print">
+              <button class="btn btn-sm btn-warning me-1" (click)="editLeave(leave)">تعديل</button>
+              <button class="btn btn-sm btn-danger" (click)="deleteLeave(leave.id)">حذف</button>
+            </td>
+          </tr>
+          <tr *ngIf="leaves.length === 0">
+            <td colspan="5">لا توجد إجازات مسجلة</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<style>
+  @media print {
+    .no-print { display: none !important; }
+    .btn { display: none !important; }
+  }
+</style>

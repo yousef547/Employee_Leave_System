@@ -1,0 +1,48 @@
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h4>{{ isEdit ? 'تعديل بيانات الموظف' : 'إضافة موظف جديد' }}</h4>
+    </div>
+    <div class="card-body">
+      <div *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
+
+      <form [formGroup]="form" (ngSubmit)="save()">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">رقم الموظف *</label>
+            <input type="number" class="form-control" formControlName="employeeNumber"
+              [class.is-invalid]="form.get('employeeNumber')?.invalid && form.get('employeeNumber')?.touched" />
+            <div class="invalid-feedback">رقم الموظف مطلوب</div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">الاسم *</label>
+            <input type="text" class="form-control" formControlName="name"
+              [class.is-invalid]="form.get('name')?.invalid && form.get('name')?.touched" />
+            <div class="invalid-feedback">الاسم مطلوب</div>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label class="form-label">تاريخ الميلاد</label>
+            <input type="date" class="form-control" formControlName="dateOfBirth" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">المؤهل</label>
+            <select class="form-select" formControlName="qualification">
+              <option value="">-- اختر المؤهل --</option>
+              <option *ngFor="let q of qualifications" [value]="q">{{ q }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-success" [disabled]="form.invalid || loading">
+            {{ loading ? 'جاري الحفظ...' : 'حفظ' }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="cancel()">إلغاء</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
