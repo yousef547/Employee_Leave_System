@@ -44,16 +44,6 @@ ng serve
 
 ---
 
-## 🗄️ إعداد SQL Server
-
-افتح `appsettings.json` وعدّل Connection String:
-
-```json
-"DefaultConnection": "Server=YOUR_SERVER;Database=EmployeeLeaveDB;Trusted_Connection=True;TrustServerCertificate=True;"
-```
-
----
-
 ## 📋 الـ API Endpoints
 
 | Method | Endpoint | الوصف |
