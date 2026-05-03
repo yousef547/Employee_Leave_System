@@ -123,8 +123,8 @@ namespace EmployeeLeaveAPI.Controllers
             var leave = await _context.Leaves.FindAsync(id);
             if (leave == null) return NotFound();
 
-            if (dto.DurationDays < 30)
-                return BadRequest("مدة الإجازة يجب ألا تقل عن 30 يوم.");
+            if (dto.DurationDays > 30 && dto.DurationDays < 1)
+                return BadRequest("مدة الإجازة يجب ألا تقل عن 1 يوم ولا تذيد عن 30 يوم.");
 
             var endDate = dto.StartDate.AddDays(dto.DurationDays - 1);
 

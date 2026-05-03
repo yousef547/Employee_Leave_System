@@ -18,7 +18,6 @@ namespace EmployeeLeaveAPI.Controllers
             _context = context;
         }
 
-        // GET: api/employees
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EmployeeDto>>> GetAll([FromQuery] PaginationParams param)
         {
@@ -52,7 +51,6 @@ namespace EmployeeLeaveAPI.Controllers
             });
         }
 
-        // GET: api/employees/5
         [HttpGet("{id}")]
         public async Task<ActionResult<EmployeeDto>> GetById(int id)
         {
@@ -69,7 +67,6 @@ namespace EmployeeLeaveAPI.Controllers
             });
         }
 
-        // POST: api/employees
         [HttpPost]
         public async Task<ActionResult<EmployeeDto>> Create(CreateEmployeeDto dto)
         {
@@ -100,7 +97,6 @@ namespace EmployeeLeaveAPI.Controllers
             });
         }
 
-        // PUT: api/employees/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, CreateEmployeeDto dto)
         {
@@ -121,7 +117,6 @@ namespace EmployeeLeaveAPI.Controllers
             return NoContent();
         }
 
-        // DELETE: api/employees/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
